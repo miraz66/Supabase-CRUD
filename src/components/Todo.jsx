@@ -47,111 +47,115 @@ export default function Todo({
       </form>
 
       <ul className="divide-y divide-gray-200 px-4">
-        {todoList?.map((todo) => {
-          const isEditing = editedTodo?.id === todo.id; // Check if in edit mode
-          const nameChanged = isEditing && editedTodo.name !== todo.name; // Check if name has changed
+        {[...todoList]
+          .filter((todo) => !todo.is_completed)
+          .reverse()
+          .concat([...todoList].filter((todo) => todo.is_completed).reverse())
+          .map((todo) => {
+            const isEditing = editedTodo?.id === todo.id; // Check if in edit mode
+            const nameChanged = isEditing && editedTodo.name !== todo.name; // Check if name has changed
 
-          return (
-            <li key={todo.id}>
-              <div className="flex justify-between py-4">
-                {isEditing ? (
-                  <div className="flex w-full items-center">
-                    <input
-                      className="w-full appearance-none rounded border px-2 py-1 text-gray-700 focus:outline-none"
-                      type="text"
-                      onChange={(e) =>
-                        setEditedTodo({ ...editedTodo, name: e.target.value })
-                      }
-                      value={editedTodo.name}
-                      required
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <input
-                      onChange={() => handleToggleTodo(todo.id)}
-                      checked={!!todo.is_completed}
-                      id={`todo-${todo.id}`}
-                      name={`todo-${todo.id}`}
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                    />
-                    <label
-                      htmlFor={`todo-${todo.id}`}
-                      className="ml-3 block text-gray-900"
-                    >
-                      <span
-                        className={clsx(
-                          "text-lg font-medium",
-                          todo.is_completed && "line-through",
-                        )}
-                      >
-                        {todo.name}
-                      </span>
-                      <span className="text-xs font-light text-gray-500">
-                        {" "}
-                        Due on 4/1/23
-                      </span>
-                    </label>
-                  </div>
-                )}
-
-                {!isEditing && (
-                  <ChevronDownIcon
-                    className="h-6 w-6 cursor-pointer text-gray-400 hover:text-gray-600"
-                    onClick={() => toggleShowMore(todo.id)}
-                    aria-hidden="true"
-                  />
-                )}
-              </div>
-
-              {showMore === todo.id && (
-                <div className="flex justify-end gap-2 pb-2">
+            return (
+              <li key={todo.id}>
+                <div className="flex justify-between py-4">
                   {isEditing ? (
-                    <>
-                      {nameChanged ? (
-                        <button
-                          onClick={() => {
-                            handleEditTodo(editedTodo.id, editedTodo.name);
-                            setEditedTodo(null);
-                          }}
-                          className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
-                        >
-                          Save
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => setEditedTodo(null)}
-                          className="rounded bg-gray-400 px-2.5 py-1 text-sm text-white hover:bg-gray-600"
-                        >
-                          Cancel
-                        </button>
-                      )}
-                    </>
+                    <div className="flex w-full items-center">
+                      <input
+                        className="w-full appearance-none rounded border px-2 py-1 text-gray-700 focus:outline-none"
+                        type="text"
+                        onChange={(e) =>
+                          setEditedTodo({ ...editedTodo, name: e.target.value })
+                        }
+                        value={editedTodo.name}
+                        required
+                      />
+                    </div>
                   ) : (
-                    <>
-                      {!todo.is_completed && (
-                        <button
-                          onClick={() => setEditedTodo({ ...todo })}
-                          className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                    <div className="flex items-center">
+                      <input
+                        onChange={() => handleToggleTodo(todo.id)}
+                        checked={!!todo.is_completed}
+                        id={`todo-${todo.id}`}
+                        name={`todo-${todo.id}`}
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                      />
+                      <label
+                        htmlFor={`todo-${todo.id}`}
+                        className="ml-3 block text-gray-900"
+                      >
+                        <span
+                          className={clsx(
+                            "text-lg font-medium",
+                            todo.is_completed && "line-through",
+                          )}
                         >
-                          Edit
-                        </button>
-                      )}
-                    </>
+                          {todo.name}
+                        </span>
+                        <span className="text-xs font-light text-gray-500">
+                          {" "}
+                          Due on 4/1/23
+                        </span>
+                      </label>
+                    </div>
                   )}
 
-                  <button
-                    onClick={() => handleDeleteTodo(todo.id)}
-                    className="rounded bg-red-500 px-2.5 py-1 text-sm text-white hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
+                  {!isEditing && (
+                    <ChevronDownIcon
+                      className="h-6 w-6 cursor-pointer text-gray-400 hover:text-gray-600"
+                      onClick={() => toggleShowMore(todo.id)}
+                      aria-hidden="true"
+                    />
+                  )}
                 </div>
-              )}
-            </li>
-          );
-        })}
+
+                {showMore === todo.id && (
+                  <div className="flex justify-end gap-2 pb-2">
+                    {isEditing ? (
+                      <>
+                        {nameChanged ? (
+                          <button
+                            onClick={() => {
+                              handleEditTodo(editedTodo.id, editedTodo.name);
+                              setEditedTodo(null);
+                            }}
+                            className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setEditedTodo(null)}
+                            className="rounded bg-gray-400 px-2.5 py-1 text-sm text-white hover:bg-gray-600"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {!todo.is_completed && (
+                          <button
+                            onClick={() => setEditedTodo({ ...todo })}
+                            className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </>
+                    )}
+
+                    <button
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      className="rounded bg-red-500 px-2.5 py-1 text-sm text-white hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
