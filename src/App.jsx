@@ -23,20 +23,21 @@ function App() {
     if (!newTodo.trim()) return;
 
     const newTodoData = {
-      name: newTodo,
+      name: newTodo.trim(),
       is_completed: false,
     };
 
     const { data, error } = await supabase
       .from("TodoList")
       .insert([newTodoData])
-      .single();
+      .select()
+      .single(); // fetches inserted record
 
     if (error) {
       console.log("Error adding todo:", error);
     } else {
-      setTodoList((prev) => [...prev, data]);
-      setNewTodo("");
+      setTodoList((prev) => [...prev, data]); // Add immediately to UI
+      setNewTodo(""); // Clear input
     }
   };
 
