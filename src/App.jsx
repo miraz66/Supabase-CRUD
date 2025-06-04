@@ -42,11 +42,14 @@ function App() {
 
 
   const handleDeleteTodo = async (id) => {
-    const { error } = await supabase.from("todo").delete().eq("id", id);
+    const { error } = await supabase
+        .from("TodoList")
+        .delete()
+        .match({ id });
     if (error) {
-      console.error(error);
+      console.log("Error deleting todo:", error);
     } else {
-      setTodoList(todoList.filter((todo) => todo.id !== id));
+      setTodoList((prev) => prev.filter((todo) => todo.id !== id));
     }
   };
 
