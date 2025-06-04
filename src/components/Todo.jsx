@@ -129,12 +129,16 @@ export default function Todo({
                       )}
                     </>
                   ) : (
-                    <button
-                      onClick={() => setEditedTodo({ ...todo })}
-                      className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
-                    >
-                      Edit
-                    </button>
+                    <>
+                      {!todo.is_completed && (
+                        <button
+                          onClick={() => handleEditTodo(todo.id, todo.name)}
+                          className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                        >
+                          Edit
+                        </button>
+                      )}
+                    </>
                   )}
 
                   <button
