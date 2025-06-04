@@ -37,7 +37,7 @@ export default function Todo({
             required
           />
           <button
-            className="flex-shrink-0 rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
+            className="flex-shrink-0 cursor-pointer rounded border-4 border-teal-500 bg-teal-500 px-2 py-1 text-sm text-white hover:border-teal-700 hover:bg-teal-700"
             type="button"
             onClick={handleAddTodo}
           >
@@ -119,14 +119,14 @@ export default function Todo({
                               handleEditTodo(editedTodo.id, editedTodo.name);
                               setEditedTodo(null);
                             }}
-                            className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                            className="cursor-pointer rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
                           >
                             Save
                           </button>
                         ) : (
                           <button
                             onClick={() => setEditedTodo(null)}
-                            className="rounded bg-gray-400 px-2.5 py-1 text-sm text-white hover:bg-gray-600"
+                            className="cursor-pointer rounded bg-gray-400 px-2.5 py-1 text-sm text-white hover:bg-gray-600"
                           >
                             Cancel
                           </button>
@@ -137,7 +137,7 @@ export default function Todo({
                         {!todo.is_completed && (
                           <button
                             onClick={() => setEditedTodo({ ...todo })}
-                            className="rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
+                            className="cursor-pointer rounded bg-teal-500 px-2.5 py-1 text-sm text-white hover:bg-teal-700"
                           >
                             Edit
                           </button>
@@ -147,7 +147,7 @@ export default function Todo({
 
                     <button
                       onClick={() => handleDeleteTodo(todo.id)}
-                      className="rounded bg-red-500 px-2.5 py-1 text-sm text-white hover:bg-red-700"
+                      className="cursor-pointer rounded bg-red-500 px-2.5 py-1 text-sm text-white hover:bg-red-700"
                     >
                       Delete
                     </button>
